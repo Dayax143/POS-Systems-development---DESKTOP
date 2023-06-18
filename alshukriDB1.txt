@@ -1,0 +1,116 @@
+use master;
+go
+drop database alshukriDB1;
+go
+create database alshukriDB1;
+use alshukriDB1;
+go
+
+
+Create table tblCustomer (
+customer_id int primary key identity (1,1) ,
+customer_name varchar(40),
+customer_phone numeric,
+customer_address varchar(40)
+);
+
+Create table tblEmployee (
+employee_id int primary key identity (1,1),
+employee_name varchar(40),
+employee_phone numeric, 
+employee_address varchar(40), 
+employee_shift varchar(10), 
+salary money
+);
+
+Create table tblProduct (
+product_id int primary key identity (1,1), 
+product_name varchar(40), 
+product_type varchar(20), 
+quantity int, 
+barcode int, 
+cost money, 
+price money
+);
+
+Create table tblSalary (
+salary_id int primary key identity (1,1), 
+employee_id int foreign key references tblEmployee(employee_id), 
+employee_name varchar(40), 
+paymentMethod varchar(10), 
+salaryAmount money, 
+date datetime
+);
+
+Create table tblPayment (
+payment_id int primary key identity (1,1), 
+customer_id int foreign key references tblCustomer(customer_id), 
+paymentStatus varchar(20), 
+paymentAmount money, 
+paymentMethod varchar(20), 
+date datetime
+);
+
+Create table tblSales (
+sale_id int primary key identity (1,1), 
+product_id int foreign key references tblProduct(product_id), 
+item_name varchar(40), 
+quantity int, 
+price money, 
+discount int, 
+netPrice money, 
+payment_id int foreign key references tblPayment(payment_id), 
+customer_id int foreign key references tblCustomer(customer_id), 
+date datetime
+);
+
+Create table tblStore (
+store_id int primary key identity (1,1), 
+store_name varchar(40), 
+item_name varchar(40), 
+quantity int, 
+price money, 
+date datetime
+);
+
+Create table tblSupplier (
+supplier_id int primary key identity (1,1), 
+supplier_name varchar(40), 
+item_name varchar(40), 
+product_quantity int, 
+store_id int foreign key references tblStore(store_id), 
+cost money, 
+date datetime
+);
+
+Create table tblLoan (
+loan_id int primary key identity (1,1), 
+customer_id int foreign key references tblCustomer(customer_id), 
+product_id int foreign key references tblProduct (product_id), 
+amount money, 
+date datetime
+);
+
+Create table tblExpense (
+expense_id int primary key identity (1,1), 
+expense_type varchar(20), 
+salary_id int foreign key references tblSalary(salary_id), 
+supplier_id int foreign key references tblSupplier(supplier_id), 
+mount money
+);
+
+Create table tblIncome (
+income_id int primary key identity (1,1), 
+payment_id int foreign key references tblPayment (payment_id), 
+balance money, 
+date datetime
+);
+
+Create table tblReport (
+report_id int primary key identity (1,1), 
+reporter varchar(20),
+employee_id int foreign key references tblEmployee(employee_id), 
+date datetime
+);
+
+
